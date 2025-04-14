@@ -1,0 +1,4 @@
+To create a new package run:
+very_good create dart_package core 
+
+
