@@ -1,4 +1,8 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:splitly/home/bloc/home_bloc.dart';
+import 'package:splitly/home/widget/widget.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -7,9 +11,62 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('HomePage'),
+    return BlocProvider(
+      create: (context) => HomeBloc(),
+      child: const HomeView(),
+    );
+  }
+}
+
+class HomeView extends StatelessWidget {
+  const HomeView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final data = PromptData(
+      participants: ['Nico', 'Agus', 'Nahuel', 'Juli', 'Sol'],
+      expenses: [
+        const Expense(name: 'Meat', amount: 45600, paidBy: 'Nahuel'),
+        const Expense(name: 'Beer', amount: 13770, paidBy: 'Nico'),
+        const Expense(name: 'Ice cream', amount: 9200, paidBy: 'Sol'),
+        const Expense(name: 'Wine', amount: 20067, paidBy: 'Nahuel'),
+      ],
+      consumptions: [
+        "Juli didn't consume wine",
+        "Sol didn't consume ice cream",
+      ],
+      conditions: ["Nico covers Agus's expenses"],
+    );
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Splitly'),
+        centerTitle: true,
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.gesture_outlined),
+        onPressed: () => context.read<HomeBloc>().add(
+              GenerateResponse(data),
+            ),
+      ),
+      body: BlocConsumer<HomeBloc, HomeState>(
+        listener: (context, state) {
+          if (state is HomeFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.errorMessage),
+                backgroundColor: Colors.redAccent,
+              ),
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state is HomeAttempting) return const LoadingWidget();
+
+          return const Center(
+            child: Text('HomePage'),
+          );
+        },
       ),
     );
   }
