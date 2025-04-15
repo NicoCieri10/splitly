@@ -1,27 +1,43 @@
-class GenerativeResponse {
-  final double totalGastado;
-  final List<String> personas;
-  final List<PersonaGasto> porPersona;
-  final List<Deuda> deudas;
-  final List<String> notas;
+import 'dart:convert';
 
+import 'package:core/core.dart';
+
+class GenerativeResponse {
   GenerativeResponse({
-    required this.totalGastado,
-    required this.personas,
-    required this.porPersona,
-    required this.deudas,
-    required this.notas,
+    this.summary,
+    this.byPerson,
+    this.debts,
+    this.notes,
   });
 
-  factory GenerativeResponse.fromJson(Map<String, dynamic> json) {
+  factory GenerativeResponse.fromJson(String json) {
+    final map = jsonDecode(_cleanResponse(json)) as JSON;
+    return GenerativeResponse.fromMap(map);
+  }
+
+  factory GenerativeResponse.fromMap(JSON map) {
+    final byPerson = map['by_person'] as JSONList?;
+    final debts = map['debts'] as JSONList?;
     return GenerativeResponse(
-      totalGastado: json['resumen']['total_gastado'].toDouble(),
-      personas: List<String>.from(json['resumen']['personas']),
-      porPersona: (json['por_persona'] as List)
-          .map((e) => PersonaGasto.fromJson(e))
-          .toList(),
-      deudas: (json['deudas'] as List).map((e) => Deuda.fromJson(e)).toList(),
-      notas: List<String>.from(json['notas']),
+      summary: Summary.fromJson(map['summary'] as JSON?),
+      byPerson: byPerson != null && byPerson.isNotEmpty
+          ? byPerson.map(PersonalSpent.fromJson).toList()
+          : [],
+      debts: debts != null && debts.isNotEmpty
+          ? debts.map(Debt.fromJson).toList()
+          : [],
+      notes: List<String>.from(map['notes'] as List? ?? []),
     );
   }
+
+  final Summary? summary;
+  final List<PersonalSpent>? byPerson;
+  final List<Debt>? debts;
+  final List<String>? notes;
+
+  // Elimina los backticks y etiquetas tipo ```json
+  static String _cleanResponse(String raw) => raw
+      .replaceAll(RegExp(r'^```json\s*'), '')
+      .replaceAll(RegExp(r'```$'), '')
+      .trim();
 }
