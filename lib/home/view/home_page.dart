@@ -61,12 +61,49 @@ class HomeView extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          if (state is HomeAttempting) return const LoadingWidget();
-
-          return const Center(
-            child: Text('HomePage'),
-          );
+          return switch (state) {
+            HomeInitial() => const _HomeInitialBody(),
+            HomeAttempting() => const LoadingWidget(),
+            HomeSuccess() => _HomeSuccessBody(state.response),
+            HomeFailure() => const _HomeInitialBody(),
+          };
         },
+      ),
+    );
+  }
+}
+
+class _HomeInitialBody extends StatelessWidget {
+  const _HomeInitialBody();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text('HomePage'),
+    );
+  }
+}
+
+class _HomeSuccessBody extends StatelessWidget {
+  const _HomeSuccessBody(this.response);
+
+  final GenerativeResponse? response;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        children: [
+          Text(
+            response?.summary?.totalSpent.toString() ?? 'N/D',
+          ),
+          Text(
+            response?.summary?.persons.toString() ?? 'N/D',
+          ),
+          Text(
+            response?.byPerson.toString() ?? 'N/D',
+          ),
+        ],
       ),
     );
   }

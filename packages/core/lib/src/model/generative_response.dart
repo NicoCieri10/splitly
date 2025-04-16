@@ -16,8 +16,16 @@ class GenerativeResponse {
   }
 
   factory GenerativeResponse.fromMap(JSON map) {
-    final byPerson = map['by_person'] as JSONList?;
-    final debts = map['debts'] as JSONList?;
+    final byPersonList = map['by_person'] as List?;
+    final byPerson = byPersonList
+        ?.map((spent) => (spent as Map).cast<String, dynamic>())
+        .toList();
+
+    final debtsList = map['debts'] as List?;
+    final debts = debtsList
+        ?.map((debt) => (debt as Map).cast<String, dynamic>())
+        .toList();
+
     return GenerativeResponse(
       summary: Summary.fromJson(map['summary'] as JSON?),
       byPerson: byPerson != null && byPerson.isNotEmpty

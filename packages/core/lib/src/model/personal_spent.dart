@@ -16,4 +16,9 @@ class PersonalSpent {
   final String? name;
   final double? total;
   final double? paid;
+
+  @override
+  String toString() {
+    return '\n name: $name, total: $total, paid: $paid';
+  }
 }
