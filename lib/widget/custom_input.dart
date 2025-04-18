@@ -7,6 +7,8 @@ class CustomInput extends StatelessWidget {
     this.hint,
     this.onFieldSubmitted,
     this.keyboardType,
+    this.maxLines,
+    this.minLines,
     super.key,
   });
 
@@ -15,6 +17,8 @@ class CustomInput extends StatelessWidget {
   final TextEditingController controller;
   final void Function(String)? onFieldSubmitted;
   final TextInputType? keyboardType;
+  final int? maxLines;
+  final int? minLines;
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +66,8 @@ class CustomInput extends StatelessWidget {
         contentPadding: const EdgeInsets.all(10),
         floatingLabelBehavior: FloatingLabelBehavior.auto,
       ),
+      maxLines: maxLines,
+      minLines: minLines,
       keyboardType: keyboardType,
       onFieldSubmitted: onFieldSubmitted,
       textCapitalization: TextCapitalization.sentences,

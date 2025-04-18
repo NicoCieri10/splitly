@@ -20,6 +20,8 @@ class HomeInitialBody extends StatefulWidget {
 class _HomeInitialBodyState extends State<HomeInitialBody> {
   final _participants = <Participant>[];
   final _expenses = <Expense>[];
+  final _consumptions = <String>[];
+  final _commentsController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +45,9 @@ class _HomeInitialBodyState extends State<HomeInitialBody> {
     //   ],
     //   conditions: ["Nico covers Agus's expenses"],
     // );
+    final isValid = _participants.isNotEmpty &&
+        _expenses.isNotEmpty &&
+        _consumptions.isNotEmpty;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -54,7 +59,8 @@ class _HomeInitialBodyState extends State<HomeInitialBody> {
           onRemovePerson: _onRemovePerson,
           onAddExpense: _onAddExpense,
           onRemoveExpense: _onRemoveExpense,
-          onSendData: _onSendData,
+          onSendData: isValid ? _onSendData : null,
+          commentsController: _commentsController,
         ),
       ],
     );
@@ -97,7 +103,8 @@ class _FormBody extends StatelessWidget {
     required this.onAddPerson,
     required this.onAddExpense,
     required this.onRemoveExpense,
-    required this.onSendData,
+    required this.commentsController,
+    this.onSendData,
   });
 
   final List<Participant> participants;
@@ -106,7 +113,8 @@ class _FormBody extends StatelessWidget {
   final void Function(Participant) onAddPerson;
   final void Function(Expense) onAddExpense;
   final void Function(Expense) onRemoveExpense;
-  final void Function() onSendData;
+  final void Function()? onSendData;
+  final TextEditingController commentsController;
 
   @override
   Widget build(BuildContext context) {
@@ -114,8 +122,8 @@ class _FormBody extends StatelessWidget {
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(
-          spacing: 1.h,
           crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: 1.h,
           children: [
             Gap(3.h),
             const TitleWidget('Participantes'),
@@ -145,6 +153,9 @@ class _FormBody extends StatelessWidget {
             const SubtitleWidget(
               // ignore: lines_longer_than_80_chars
               'Podés agregar alguna condición o comentario extra para tener en cuenta a la hora de repartir los gastos.\nEj.: Nico cubre los gastos de Agus',
+            ),
+            CommentsInputWidget(
+              controller: commentsController,
             ),
             CustomButton(
               text: 'Enviar',
