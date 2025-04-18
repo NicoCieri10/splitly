@@ -23,13 +23,13 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final data = PromptData(
+    final sendData = PromptData(
       participants: ['Nico', 'Agus', 'Nahuel', 'Juli', 'Sol'],
       expenses: [
-        const Expense(name: 'Meat', amount: 45600, paidBy: 'Nahuel'),
-        const Expense(name: 'Beer', amount: 13770, paidBy: 'Nico'),
         const Expense(name: 'Ice cream', amount: 9200, paidBy: 'Sol'),
+        const Expense(name: 'Meat', amount: 45600, paidBy: 'Nahuel'),
         const Expense(name: 'Wine', amount: 20067, paidBy: 'Nahuel'),
+        const Expense(name: 'Beer', amount: 13770, paidBy: 'Nico'),
       ],
       consumptions: [
         "Juli didn't consume wine",
@@ -43,68 +43,32 @@ class HomeView extends StatelessWidget {
         title: const Text('Splitly'),
         centerTitle: true,
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.gesture_outlined),
-        onPressed: () => context.read<HomeBloc>().add(
-              GenerateResponse(data),
-            ),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   child: const Icon(Icons.gesture_outlined),
+      //   onPressed: () => context.read<HomeBloc>().add(
+      //         GenerateResponse(sendData),
+      //       ),
+      // ),
       body: BlocConsumer<HomeBloc, HomeState>(
-        listener: (context, state) {
-          if (state is HomeFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.errorMessage),
-                backgroundColor: Colors.redAccent,
-              ),
-            );
-          }
-        },
-        builder: (context, state) {
-          return switch (state) {
-            HomeInitial() => const _HomeInitialBody(),
-            HomeAttempting() => const LoadingWidget(),
-            HomeSuccess() => _HomeSuccessBody(state.response),
-            HomeFailure() => const _HomeInitialBody(),
-          };
+        listener: homeListener,
+        builder: (context, state) => switch (state) {
+          HomeInitial() => const HomeInitialBody(),
+          HomeAttempting() => const LoadingWidget(),
+          HomeSuccess() => HomeSuccessBody(state.response),
+          HomeFailure() => const HomeInitialBody(),
         },
       ),
     );
   }
-}
 
-class _HomeInitialBody extends StatelessWidget {
-  const _HomeInitialBody();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('HomePage'),
-    );
-  }
-}
-
-class _HomeSuccessBody extends StatelessWidget {
-  const _HomeSuccessBody(this.response);
-
-  final GenerativeResponse? response;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          Text(
-            response?.summary?.totalSpent.toString() ?? 'N/D',
-          ),
-          Text(
-            response?.summary?.persons.toString() ?? 'N/D',
-          ),
-          Text(
-            response?.byPerson.toString() ?? 'N/D',
-          ),
-        ],
-      ),
-    );
+  void homeListener(BuildContext context, HomeState state) {
+    if (state is HomeFailure) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(state.errorMessage),
+          backgroundColor: Colors.redAccent,
+        ),
+      );
+    }
   }
 }

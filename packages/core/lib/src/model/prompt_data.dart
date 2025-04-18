@@ -46,7 +46,6 @@ ${expenses.map((e) => e.toString()).join(', ')}
 - Calculate how much each person *should* pay, how much they *actually* paid, and if they have credit or debt.
 - Calculate who owes whom and how much.
 - Exclude from debt anyone whose expenses were covered by others (e.g., if Nico covers Agus).
-- Sort the `by_person` list alphabetically by name.
 - If there are no relevant notes or special comments, return `"notes": []`.
 - If a person is covered by someone else, their share of the expenses must be entirely paid by the covering person.
 - Do NOT assign any debt to the covered person.
