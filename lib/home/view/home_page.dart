@@ -23,40 +23,26 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sendData = PromptData(
-      participants: ['Nico', 'Agus', 'Nahuel', 'Juli', 'Sol'],
-      expenses: [
-        const Expense(name: 'Ice cream', amount: 9200, paidBy: 'Sol'),
-        const Expense(name: 'Meat', amount: 45600, paidBy: 'Nahuel'),
-        const Expense(name: 'Wine', amount: 20067, paidBy: 'Nahuel'),
-        const Expense(name: 'Beer', amount: 13770, paidBy: 'Nico'),
-      ],
-      consumptions: [
-        "Juli didn't consume wine",
-        "Sol didn't consume ice cream",
-      ],
-      conditions: ["Nico covers Agus's expenses"],
-    );
+    void onSendData(PromptData data) => context.read<HomeBloc>().add(
+          GenerateResponse(data),
+        );
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Splitly'),
-        centerTitle: true,
-      ),
-      // floatingActionButton: FloatingActionButton(
-      //   child: const Icon(Icons.gesture_outlined),
-      //   onPressed: () => context.read<HomeBloc>().add(
-      //         GenerateResponse(sendData),
-      //       ),
-      // ),
-      body: BlocConsumer<HomeBloc, HomeState>(
-        listener: homeListener,
-        builder: (context, state) => switch (state) {
-          HomeInitial() => const HomeInitialBody(),
-          HomeAttempting() => const LoadingWidget(),
-          HomeSuccess() => HomeSuccessBody(state.response),
-          HomeFailure() => const HomeInitialBody(),
-        },
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Splitly'),
+          centerTitle: true,
+        ),
+        body: BlocConsumer<HomeBloc, HomeState>(
+          listener: homeListener,
+          builder: (context, state) => switch (state) {
+            HomeInitial() => HomeInitialBody(onSendData: onSendData),
+            HomeAttempting() => const LoadingWidget(),
+            HomeSuccess() => HomeSuccessBody(state.response),
+            HomeFailure() => const SizedBox(),
+          },
+        ),
       ),
     );
   }

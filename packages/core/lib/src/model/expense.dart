@@ -1,3 +1,5 @@
+import 'package:core/core.dart';
+
 class Expense {
   const Expense({
     required this.name,
@@ -7,8 +9,8 @@ class Expense {
 
   final String name;
   final double amount;
-  final String paidBy;
+  final Participant paidBy;
 
   @override
-  String toString() => '$name: $amount-$paidBy';
+  String toString() => '$name: $amount-${paidBy.name}';
 }

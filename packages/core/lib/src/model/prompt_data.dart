@@ -10,10 +10,23 @@ class PromptData {
     this.conditions = const [],
   });
 
-  final List<String> participants;
+  final List<Participant> participants;
   final List<Expense> expenses;
   final List<String> consumptions;
   final List<String> conditions;
+
+  PromptData copyWith({
+    List<Participant>? participants,
+    List<Expense>? expenses,
+    List<String>? consumptions,
+    List<String>? conditions,
+  }) =>
+      PromptData(
+        participants: participants ?? this.participants,
+        expenses: expenses ?? this.expenses,
+        conditions: conditions ?? this.conditions,
+        consumptions: consumptions ?? this.consumptions,
+      );
 
   String toPrompt() {
     final buffer = StringBuffer()
@@ -21,7 +34,7 @@ class PromptData {
 I will provide you with the details of a gathering involving multiple people and their individual consumptions. I need you to automatically calculate how much each person should pay, based on what they consumed and what they already paid. Then, tell me who owes whom and how much.
 
 **Participants**:
-${participants.join(', ')}
+${participants.map((e) => e.name).join(', ')}
 
 **Expenses**:
 ${expenses.map((e) => e.toString()).join(', ')}
