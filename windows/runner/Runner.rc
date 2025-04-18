@@ -89,11 +89,11 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example.verygoodcore.splitly" "\0"
+            VALUE "CompanyName", "com.splitly.app" "\0"
             VALUE "FileDescription", "splitly" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "splitly" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2025 com.example.verygoodcore.splitly. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2025 com.splitly.app. All rights reserved." "\0"
             VALUE "OriginalFilename", "splitly.exe" "\0"
             VALUE "ProductName", "Splitly" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"

@@ -1,4 +1,4 @@
-package com.example.verygoodcore.splitly
+package com.splitly.app
 
 import io.flutter.embedding.android.FlutterActivity
 
