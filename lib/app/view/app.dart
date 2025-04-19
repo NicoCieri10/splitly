@@ -39,13 +39,13 @@ class _AppState extends State<App> {
 
   GoRouter router(BuildContext context) {
     return GoRouter(
-      initialLocation: HomePage.route,
+      initialLocation: InitialPage.route,
       routes: <GoRoute>[
-        //  GoRoute(
-        //   name: InitialPage.route,
-        //   path: InitialPage.route,
-        //   builder: (_, state) => InitialPage(key: state.pageKey),
-        // ),
+        GoRoute(
+          name: InitialPage.route,
+          path: InitialPage.route,
+          builder: (_, state) => InitialPage(key: state.pageKey),
+        ),
         GoRoute(
           name: HomePage.route,
           path: HomePage.route,
