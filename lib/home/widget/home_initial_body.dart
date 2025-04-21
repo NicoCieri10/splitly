@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -20,7 +21,7 @@ class HomeInitialBody extends StatefulWidget {
 class _HomeInitialBodyState extends State<HomeInitialBody> {
   final _participants = <Participant>[];
   final _expenses = <Expense>[];
-  final _consumptions = <String>[];
+  final _consumptions = <Consumption>[];
   final _commentsController = TextEditingController();
 
   @override
@@ -45,22 +46,25 @@ class _HomeInitialBodyState extends State<HomeInitialBody> {
     //   ],
     //   conditions: ["Nico covers Agus's expenses"],
     // );
-    final isValid = _participants.isNotEmpty &&
-        _expenses.isNotEmpty &&
-        _consumptions.isNotEmpty;
+    final isValid = _participants.isNotEmpty && _expenses.isNotEmpty;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _FormBody(
-          participants: _participants,
-          expenses: _expenses,
-          onAddPerson: _onAddPerson,
-          onRemovePerson: _onRemovePerson,
-          onAddExpense: _onAddExpense,
-          onRemoveExpense: _onRemoveExpense,
-          onSendData: isValid ? _onSendData : null,
-          commentsController: _commentsController,
+          _FormBodyData(
+            participants: _participants,
+            expenses: _expenses,
+            consumptions: _consumptions,
+            commentsController: _commentsController,
+            onAddPerson: _onAddPerson,
+            onRemovePerson: _onRemovePerson,
+            onAddExpense: _onAddExpense,
+            onRemoveExpense: _onRemoveExpense,
+            onAddConsumption: _onAddConsumption,
+            onRemoveConsumption: _onRemoveConsumption,
+            onSendData: isValid ? _onSendData : null,
+          ),
         ),
       ],
     );
@@ -93,28 +97,34 @@ class _HomeInitialBodyState extends State<HomeInitialBody> {
 
   void _onRemoveExpense(Expense expense) =>
       setState(() => _expenses.removeWhere((e) => e == expense));
+
+  void _onAddConsumption(Consumption consumption) {
+    final oldConsumption = _consumptions
+        .firstWhereOrNull((e) => e.participant == consumption.participant);
+
+    if (oldConsumption?.expenses == consumption.expenses) return;
+
+    if (oldConsumption == null) {
+      _consumptions.add(consumption);
+    } else {
+      final i = _consumptions.indexOf(oldConsumption);
+      _consumptions[i] = consumption;
+    }
+
+    setState(() {});
+  }
+
+  void _onRemoveConsumption(Consumption consumption) => setState(
+        () => _consumptions.removeWhere(
+          (e) => e.participant == consumption.participant,
+        ),
+      );
 }
 
 class _FormBody extends StatelessWidget {
-  const _FormBody({
-    required this.participants,
-    required this.expenses,
-    required this.onRemovePerson,
-    required this.onAddPerson,
-    required this.onAddExpense,
-    required this.onRemoveExpense,
-    required this.commentsController,
-    this.onSendData,
-  });
+  const _FormBody(this.formBodyData);
 
-  final List<Participant> participants;
-  final List<Expense> expenses;
-  final void Function(Participant) onRemovePerson;
-  final void Function(Participant) onAddPerson;
-  final void Function(Expense) onAddExpense;
-  final void Function(Expense) onRemoveExpense;
-  final void Function()? onSendData;
-  final TextEditingController commentsController;
+  final _FormBodyData formBodyData;
 
   @override
   Widget build(BuildContext context) {
@@ -129,18 +139,18 @@ class _FormBody extends StatelessWidget {
             const TitleWidget('Participantes'),
             const SubtitleWidget('¿Quiénes participaron en la reunión?'),
             ParticipantsInputWidget(
-              participants: participants,
-              onAddPerson: onAddPerson,
-              onRemovePerson: onRemovePerson,
+              participants: formBodyData.participants,
+              onAddPerson: formBodyData.onAddPerson,
+              onRemovePerson: formBodyData.onRemovePerson,
             ),
             Gap(1.h),
             const TitleWidget('Gastos'),
             const SubtitleWidget('Agregá los gastos realizados.'),
             ExpensesInputWidget(
-              expenses: expenses,
-              participants: participants,
-              onAddExpense: onAddExpense,
-              onRemoveExpense: onRemoveExpense,
+              expenses: formBodyData.expenses,
+              participants: formBodyData.participants,
+              onAddExpense: formBodyData.onAddExpense,
+              onRemoveExpense: formBodyData.onRemoveExpense,
             ),
             Gap(1.h),
             const TitleWidget('Consumos'),
@@ -148,23 +158,56 @@ class _FormBody extends StatelessWidget {
               // ignore: lines_longer_than_80_chars
               'Agregá los consumos realizados por persona.\nSi no se agrega un consumo, se asume que esa persona consumió todo.',
             ),
+            ConsumptionsInputWidget(
+              participants: formBodyData.participants,
+              expenses: formBodyData.expenses,
+              consumptions: formBodyData.consumptions,
+              onAddConsumption: formBodyData.onAddConsumption,
+              onRemoveConsumption: formBodyData.onRemoveConsumption,
+            ),
             Gap(1.h),
             const TitleWidget('¿Algún comentario extra?'),
             const SubtitleWidget(
               // ignore: lines_longer_than_80_chars
               'Podés agregar alguna condición o comentario extra para tener en cuenta a la hora de repartir los gastos.\nEj.: Nico cubre los gastos de Agus',
             ),
-            CommentsInputWidget(
-              controller: commentsController,
-            ),
+            CommentsInputWidget(controller: formBodyData.commentsController),
             CustomButton(
               text: 'Enviar',
               margin: EdgeInsets.all(5.w),
-              onPressed: onSendData,
+              onPressed: formBodyData.onSendData,
             ),
           ],
         ),
       ),
     );
   }
+}
+
+class _FormBodyData {
+  const _FormBodyData({
+    required this.participants,
+    required this.expenses,
+    required this.consumptions,
+    required this.onRemovePerson,
+    required this.onAddPerson,
+    required this.onAddExpense,
+    required this.onRemoveExpense,
+    required this.commentsController,
+    required this.onAddConsumption,
+    required this.onRemoveConsumption,
+    this.onSendData,
+  });
+
+  final List<Participant> participants;
+  final List<Expense> expenses;
+  final List<Consumption> consumptions;
+  final TextEditingController commentsController;
+  final void Function(Participant) onRemovePerson;
+  final void Function(Participant) onAddPerson;
+  final void Function(Expense) onAddExpense;
+  final void Function(Expense) onRemoveExpense;
+  final void Function(Consumption) onAddConsumption;
+  final void Function(Consumption) onRemoveConsumption;
+  final void Function()? onSendData;
 }

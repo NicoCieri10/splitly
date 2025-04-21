@@ -3,9 +3,9 @@ import 'package:core/core.dart';
 class Consumption {
   const Consumption({
     required this.participant,
-    required this.expense,
+    required this.expenses,
   });
 
   final Participant participant;
-  final Expense expense;
+  final List<Expense> expenses;
 }

@@ -1,9 +1,12 @@
 export 'comments_input_widget.dart';
+export 'consumption_item.dart';
+export 'consumptions_input_widget.dart';
 export 'expense_item.dart';
 export 'expenses_input_widget.dart';
 export 'home_initial_body.dart';
 export 'home_success_body.dart';
 export 'loading_widget.dart';
+export 'new_consumption_dialog.dart';
 export 'new_expense_dialog.dart';
 export 'participants_input_widget.dart';
 export 'subtitle_widget.dart';
