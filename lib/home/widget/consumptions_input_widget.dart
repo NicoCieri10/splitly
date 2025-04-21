@@ -68,7 +68,7 @@ class ConsumptionsInputWidget extends StatelessWidget {
             onPressed: participants.isEmpty || expenses.isEmpty
                 ? null
                 : onCreateConsumption,
-            child: const Text('Agregar consumo'),
+            child: const Text('Agregar o modificar consumo'),
           ),
         ),
       ],
