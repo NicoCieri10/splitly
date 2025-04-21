@@ -9,10 +9,12 @@ import 'package:splitly/widget/widget.dart';
 class NewExpenseDialog extends StatefulWidget {
   const NewExpenseDialog({
     required this.participants,
+    this.expense,
     super.key,
   });
 
   final List<Participant> participants;
+  final Expense? expense;
 
   @override
   State<NewExpenseDialog> createState() => _NewExpenseDialogState();
@@ -23,6 +25,25 @@ class _NewExpenseDialogState extends State<NewExpenseDialog> {
   final _amountController = TextEditingController();
 
   Participant? _selectedParticipant;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.expense == null) return;
+
+    WidgetsBinding.instance.addPostFrameCallback(_loadExpenseData);
+  }
+
+  void _loadExpenseData(_) {
+    final item = widget.expense?.name;
+    final amount = widget.expense?.amount.toString();
+    final participant = widget.expense?.paidBy;
+
+    _expenseController.text = item ?? '';
+    _amountController.text = amount ?? '';
+    _selectedParticipant = participant;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +61,7 @@ class _NewExpenseDialogState extends State<NewExpenseDialog> {
       child: Dialog(
         insetPadding: EdgeInsets.symmetric(horizontal: 5.w),
         child: Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: 20.sp,
-            horizontal: 20.sp,
-          ),
+          padding: EdgeInsets.all(20.sp),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,

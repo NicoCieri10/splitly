@@ -23,6 +23,7 @@ class ExpensesInputWidget extends StatelessWidget {
     final items = expenses.map(
       (expense) => ExpenseItem(
         expense: expense,
+        // TODO(NicoCieri) implement onEditExpense
         onEdit: () {},
         onDelete: () => onRemoveExpense(expense),
       ),
@@ -31,9 +32,7 @@ class ExpensesInputWidget extends StatelessWidget {
     Future<void> onCreateExpense() async {
       final expense = await showDialog<Expense>(
         context: context,
-        builder: (context) => NewExpenseDialog(
-          participants: participants,
-        ),
+        builder: (context) => NewExpenseDialog(participants: participants),
       );
 
       if (expense == null) return;
