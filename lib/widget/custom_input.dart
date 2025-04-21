@@ -7,7 +7,7 @@ class CustomInput extends StatelessWidget {
     this.hint,
     this.onFieldSubmitted,
     this.keyboardType,
-    this.maxLines,
+    this.maxLines = 1,
     this.minLines,
     super.key,
   });
@@ -17,7 +17,7 @@ class CustomInput extends StatelessWidget {
   final TextEditingController controller;
   final void Function(String)? onFieldSubmitted;
   final TextInputType? keyboardType;
-  final int? maxLines;
+  final int maxLines;
   final int? minLines;
 
   @override
