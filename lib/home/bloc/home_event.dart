@@ -13,3 +13,7 @@ class GenerateResponse extends HomeEvent {
 
   final PromptData promptData;
 }
+
+class NewRequest extends HomeEvent {
+  const NewRequest();
+}

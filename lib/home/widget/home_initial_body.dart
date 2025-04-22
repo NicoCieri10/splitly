@@ -74,8 +74,8 @@ class _HomeInitialBodyState extends State<HomeInitialBody> {
         PromptData(
           participants: _participants,
           expenses: _expenses,
+          consumptions: _consumptions,
           conditions: [],
-          consumptions: [],
         ),
       );
 

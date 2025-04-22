@@ -12,20 +12,20 @@ class PromptData {
 
   final List<Participant> participants;
   final List<Expense> expenses;
-  final List<String> consumptions;
+  final List<Consumption> consumptions;
   final List<String> conditions;
 
   PromptData copyWith({
     List<Participant>? participants,
     List<Expense>? expenses,
-    List<String>? consumptions,
+    List<Consumption>? consumptions,
     List<String>? conditions,
   }) =>
       PromptData(
         participants: participants ?? this.participants,
         expenses: expenses ?? this.expenses,
-        conditions: conditions ?? this.conditions,
         consumptions: consumptions ?? this.consumptions,
+        conditions: conditions ?? this.conditions,
       );
 
   String toPrompt() {
@@ -44,7 +44,7 @@ ${expenses.map((e) => e.toString()).join(', ')}
       ..write(
         consumptions.isEmpty
             ? 'Everyone consumed everything.'
-            : consumptions.join('\n'),
+            : consumptions.map((e) => e.toString()).join('.\n'),
       )
       ..write('''
 

@@ -8,4 +8,9 @@ class Consumption {
 
   final Participant participant;
   final List<Expense> expenses;
+
+  @override
+  String toString() {
+    return '$participant: $expenses';
+  }
 }

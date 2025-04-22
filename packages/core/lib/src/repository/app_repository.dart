@@ -13,10 +13,12 @@ class AppRepository {
     PromptData prompt,
   ) async {
     try {
+      final promptText = prompt.toPrompt();
+
+      log(promptText);
+
       final content = [
-        Content.text(
-          prompt.toPrompt(),
-        ),
+        Content.text(promptText),
       ];
       final response = await _model.generateContent(content);
       final data = response.text;

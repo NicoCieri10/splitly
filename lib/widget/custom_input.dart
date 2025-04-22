@@ -63,7 +63,10 @@ class CustomInput extends StatelessWidget {
           ),
           borderRadius: BorderRadius.circular(20),
         ),
-        contentPadding: const EdgeInsets.all(10),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 10,
+        ),
         floatingLabelBehavior: FloatingLabelBehavior.auto,
       ),
       maxLines: maxLines,

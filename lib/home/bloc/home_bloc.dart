@@ -29,5 +29,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         }
       },
     );
+
+    on<NewRequest>(
+      (event, emit) => emit(HomeInitial()),
+    );
   }
 }

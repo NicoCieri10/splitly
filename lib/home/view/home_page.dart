@@ -27,6 +27,10 @@ class HomeView extends StatelessWidget {
           GenerateResponse(data),
         );
 
+    void onNewRequest() => context.read<HomeBloc>().add(
+          const NewRequest(),
+        );
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
       child: Scaffold(
@@ -39,7 +43,10 @@ class HomeView extends StatelessWidget {
           builder: (context, state) => switch (state) {
             HomeInitial() => HomeInitialBody(onSendData: onSendData),
             HomeAttempting() => const LoadingWidget(),
-            HomeSuccess() => HomeSuccessBody(state.response),
+            HomeSuccess() => HomeSuccessBody(
+                response: state.response,
+                onNewRequest: onNewRequest,
+              ),
             HomeFailure() => const SizedBox(),
           },
         ),
