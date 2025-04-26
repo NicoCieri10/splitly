@@ -60,6 +60,7 @@ class _HomeInitialBodyState extends State<HomeInitialBody> {
             onAddPerson: _onAddPerson,
             onRemovePerson: _onRemovePerson,
             onAddExpense: _onAddExpense,
+            onEditExpense: _onEditExpense,
             onRemoveExpense: _onRemoveExpense,
             onAddConsumption: _onAddConsumption,
             onRemoveConsumption: _onRemoveConsumption,
@@ -95,8 +96,16 @@ class _HomeInitialBodyState extends State<HomeInitialBody> {
 
   void _onAddExpense(Expense expense) => setState(() => _expenses.add(expense));
 
+  void _onEditExpense(Expense expense, Expense oldExpense) {
+    _expenses
+      ..remove(oldExpense)
+      ..add(expense);
+
+    setState(() {});
+  }
+
   void _onRemoveExpense(Expense expense) =>
-      setState(() => _expenses.removeWhere((e) => e == expense));
+      setState(() => _expenses.remove(expense));
 
   void _onAddConsumption(Consumption consumption) {
     final oldConsumption = _consumptions
@@ -150,6 +159,7 @@ class _FormBody extends StatelessWidget {
               expenses: formBodyData.expenses,
               participants: formBodyData.participants,
               onAddExpense: formBodyData.onAddExpense,
+              onEditExpense: formBodyData.onEditExpense,
               onRemoveExpense: formBodyData.onRemoveExpense,
             ),
             Gap(1.h),
@@ -192,6 +202,7 @@ class _FormBodyData {
     required this.onRemovePerson,
     required this.onAddPerson,
     required this.onAddExpense,
+    required this.onEditExpense,
     required this.onRemoveExpense,
     required this.commentsController,
     required this.onAddConsumption,
@@ -206,6 +217,7 @@ class _FormBodyData {
   final void Function(Participant) onRemovePerson;
   final void Function(Participant) onAddPerson;
   final void Function(Expense) onAddExpense;
+  final void Function(Expense, Expense) onEditExpense;
   final void Function(Expense) onRemoveExpense;
   final void Function(Consumption) onAddConsumption;
   final void Function(Consumption) onRemoveConsumption;

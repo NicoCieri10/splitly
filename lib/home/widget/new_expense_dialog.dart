@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import 'package:splitly/home/widget/widget.dart';
 import 'package:splitly/widget/widget.dart';
@@ -23,6 +24,11 @@ class NewExpenseDialog extends StatefulWidget {
 class _NewExpenseDialogState extends State<NewExpenseDialog> {
   final _expenseController = TextEditingController();
   final _amountController = TextEditingController();
+  final _formatter = NumberFormat.currency(
+    locale: 'es_AR',
+    decimalDigits: 2,
+    customPattern: '#,##0.00',
+  );
 
   Participant? _selectedParticipant;
 
@@ -36,13 +42,15 @@ class _NewExpenseDialogState extends State<NewExpenseDialog> {
   }
 
   void _loadExpenseData(_) {
-    final item = widget.expense?.name;
-    final amount = widget.expense?.amount.toString();
+    final item = widget.expense?.name ?? '';
+    final amount = _formatter.format(widget.expense?.amount);
     final participant = widget.expense?.paidBy;
 
-    _expenseController.text = item ?? '';
-    _amountController.text = amount ?? '';
+    _expenseController.text = item;
+    _amountController.text = amount;
     _selectedParticipant = participant;
+
+    setState(() {});
   }
 
   @override
@@ -145,7 +153,9 @@ class _NewExpenseDialogState extends State<NewExpenseDialog> {
 
   void _onAddExpense() {
     final name = _expenseController.text;
-    final amount = double.tryParse(_amountController.text);
+    final filteredAmount =
+        _amountController.text.replaceAll('.', '').replaceAll(',', '.');
+    final amount = double.tryParse(filteredAmount);
     final participant = _selectedParticipant;
 
     if (name.isEmpty || amount == null || participant == null) return;

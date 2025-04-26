@@ -1,6 +1,7 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 class ExpenseItem extends StatelessWidget {
@@ -17,6 +18,13 @@ class ExpenseItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final formatter = NumberFormat.currency(
+      locale: 'es_AR',
+      symbol: r'$',
+      decimalDigits: 2,
+      customPattern: '\u00A4 #,##0.00',
+    );
+
     return Container(
       decoration: BoxDecoration(
         border: Border.all(
@@ -45,7 +53,7 @@ class ExpenseItem extends StatelessWidget {
               const Gap(10),
               _DetailWidget(
                 category: 'Valor: ',
-                value: expense.amount.toString(),
+                value: formatter.format(expense.amount),
               ),
               const Gap(10),
               _DetailWidget(

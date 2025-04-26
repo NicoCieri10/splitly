@@ -9,6 +9,7 @@ class ExpensesInputWidget extends StatelessWidget {
     required this.expenses,
     required this.participants,
     required this.onAddExpense,
+    required this.onEditExpense,
     required this.onRemoveExpense,
     super.key,
   });
@@ -16,19 +17,11 @@ class ExpensesInputWidget extends StatelessWidget {
   final List<Expense> expenses;
   final List<Participant> participants;
   final void Function(Expense) onAddExpense;
+  final void Function(Expense, Expense) onEditExpense;
   final void Function(Expense) onRemoveExpense;
 
   @override
   Widget build(BuildContext context) {
-    final items = expenses.map(
-      (expense) => ExpenseItem(
-        expense: expense,
-        // TODO(NicoCieri): implement onEditExpense
-        onEdit: () {},
-        onDelete: () => onRemoveExpense(expense),
-      ),
-    );
-
     Future<void> onCreateExpense() async {
       final expense = await showDialog<Expense>(
         context: context,
@@ -39,6 +32,31 @@ class ExpensesInputWidget extends StatelessWidget {
 
       onAddExpense(expense);
     }
+
+    Future<void> onEditExpense(Expense expense) async {
+      final newExpense = await showDialog<Expense>(
+        context: context,
+        builder: (context) => NewExpenseDialog(
+          participants: participants,
+          expense: expense,
+        ),
+      );
+
+      if (newExpense == null) return;
+
+      this.onEditExpense(
+        newExpense,
+        expense,
+      );
+    }
+
+    final items = expenses.map(
+      (expense) => ExpenseItem(
+        expense: expense,
+        onEdit: () => onEditExpense(expense),
+        onDelete: () => onRemoveExpense(expense),
+      ),
+    );
 
     return Column(
       children: [
