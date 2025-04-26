@@ -23,7 +23,7 @@ class ExpensesInputWidget extends StatelessWidget {
     final items = expenses.map(
       (expense) => ExpenseItem(
         expense: expense,
-        // TODO(NicoCieri) implement onEditExpense
+        // TODO(NicoCieri): implement onEditExpense
         onEdit: () {},
         onDelete: () => onRemoveExpense(expense),
       ),

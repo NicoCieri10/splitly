@@ -101,9 +101,8 @@ class _NewExpenseDialogState extends State<NewExpenseDialog> {
                   horizontal: 4.5.w,
                 ),
               ),
-              CustomInput(
+              CustomInput.amount(
                 controller: _amountController,
-                keyboardType: TextInputType.number,
                 hint: 'Costo',
               ),
               Gap(1.h),

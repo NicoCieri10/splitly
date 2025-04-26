@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
 import 'package:splitly/home/home.dart';
-import 'package:splitly/home/widget/widget.dart';
 
 class InitialPage extends StatefulWidget {
   const InitialPage({super.key});
@@ -21,11 +20,11 @@ class _InitialPageState extends State<InitialPage> {
   }
 
   Future<void> _initCallback(_) async {
-    await Future.delayed(const Duration(seconds: 3), () {});
+    await Future.delayed(const Duration(seconds: 2), () {});
 
     if (!mounted) return;
 
-    // context.replaceNamed(HomePage.route);
+    context.replaceNamed(HomePage.route);
   }
 
   @override
