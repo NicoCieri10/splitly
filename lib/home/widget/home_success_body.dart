@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:sizer/sizer.dart';
+import 'package:splitly/home/widget/widget.dart';
 import 'package:splitly/widget/custom_button.dart';
 
 class HomeSuccessBody extends StatelessWidget {
@@ -40,7 +41,10 @@ class HomeSuccessBody extends StatelessWidget {
             ],
           ),
           const Text('Por persona: '),
-          _ByPersonWidget(response?.byPerson?[0]),
+          PersonalConsumptionWidget(
+            consumption: promptData.consumptions[0],
+            personalSpent: response?.byPerson?[0],
+          ),
           const Spacer(),
           CustomButton(
             text: 'Nueva consulta',
@@ -49,28 +53,6 @@ class HomeSuccessBody extends StatelessWidget {
           Gap(2.5.h),
         ],
       ),
-    );
-  }
-}
-
-class _ByPersonWidget extends StatelessWidget {
-  const _ByPersonWidget(this.personalSpent);
-
-  final PersonalSpent? personalSpent;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          personalSpent?.name ?? 'N/D',
-        ),
-        Row(
-          children: [
-            Text(''),
-          ],
-        ),
-      ],
     );
   }
 }

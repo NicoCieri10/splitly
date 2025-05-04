@@ -9,5 +9,6 @@ export 'loading_widget.dart';
 export 'new_consumption_dialog.dart';
 export 'new_expense_dialog.dart';
 export 'participants_input_widget.dart';
+export 'personal_consumption_widget.dart';
 export 'subtitle_widget.dart';
 export 'title_widget.dart';
