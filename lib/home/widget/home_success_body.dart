@@ -40,9 +40,7 @@ class HomeSuccessBody extends StatelessWidget {
             ],
           ),
           const Text('Por persona: '),
-          Text(
-            response?.byPerson?[0].name ?? 'N/D',
-          ),
+          _ByPersonWidget(response?.byPerson?[0]),
           const Spacer(),
           CustomButton(
             text: 'Nueva consulta',
@@ -51,6 +49,28 @@ class HomeSuccessBody extends StatelessWidget {
           Gap(2.5.h),
         ],
       ),
+    );
+  }
+}
+
+class _ByPersonWidget extends StatelessWidget {
+  const _ByPersonWidget(this.personalSpent);
+
+  final PersonalSpent? personalSpent;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          personalSpent?.name ?? 'N/D',
+        ),
+        Row(
+          children: [
+            Text(''),
+          ],
+        ),
+      ],
     );
   }
 }

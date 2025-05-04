@@ -26,6 +26,7 @@ class _AppState extends State<App> {
             appBarTheme: AppBarTheme(
               backgroundColor: Theme.of(context).colorScheme.inversePrimary,
             ),
+            fontFamily: 'Quicksand',
             useMaterial3: true,
           ),
           localizationsDelegates: AppLocalizations.localizationsDelegates,
