@@ -8,25 +8,40 @@ class HomeSuccessBody extends StatelessWidget {
   const HomeSuccessBody({
     required this.response,
     required this.onNewRequest,
+    required this.promptData,
     super.key,
   });
 
   final GenerativeResponse? response;
   final VoidCallback onNewRequest;
+  final PromptData promptData;
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            response?.summary?.totalSpent.toString() ?? 'N/D',
+            'Subtotal',
+            textAlign: TextAlign.start,
+            style: TextStyle(
+              fontSize: 25.sp,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          Text(
-            response?.summary?.persons.toString() ?? 'N/D',
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('Total: '),
+              Text(
+                response?.summary?.totalSpent.toString() ?? 'N/D',
+              ),
+            ],
           ),
+          const Text('Por persona: '),
           Text(
-            response?.byPerson.toString() ?? 'N/D',
+            response?.byPerson?[0].name ?? 'N/D',
           ),
           const Spacer(),
           CustomButton(

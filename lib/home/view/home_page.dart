@@ -45,6 +45,7 @@ class HomeView extends StatelessWidget {
             HomeAttempting() => const LoadingWidget(),
             HomeSuccess() => HomeSuccessBody(
                 response: state.response,
+                promptData: state.promptData ?? PromptData.empty(),
                 onNewRequest: onNewRequest,
               ),
             HomeFailure() => const SizedBox(),

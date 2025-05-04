@@ -10,6 +10,11 @@ class PromptData {
     this.conditions = const [],
   });
 
+  factory PromptData.empty() => PromptData(
+        participants: [],
+        expenses: [],
+      );
+
   final List<Participant> participants;
   final List<Expense> expenses;
   final List<Consumption> consumptions;
