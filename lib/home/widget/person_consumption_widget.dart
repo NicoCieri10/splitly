@@ -4,8 +4,8 @@ import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
-class PersonalConsumptionWidget extends StatelessWidget {
-  const PersonalConsumptionWidget({
+class PersonConsumptionWidget extends StatelessWidget {
+  const PersonConsumptionWidget({
     required this.consumption,
     required this.personalSpent,
     super.key,
@@ -16,13 +16,26 @@ class PersonalConsumptionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: 20.sp,
-        vertical: 20.sp,
+    final expensesList = consumption?.expenses
+            .map(
+              (e) => _ConsumptionTextWidget(e.name),
+            )
+            .toList() ??
+        [];
+
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Theme.of(context).primaryColor,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(10.sp),
       ),
+      padding: EdgeInsets.all(20.sp),
+      margin: EdgeInsets.all(2.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             consumption?.participant.name ?? 'N/D',
@@ -32,11 +45,10 @@ class PersonalConsumptionWidget extends StatelessWidget {
             ),
           ),
           Gap(10.sp),
-          _ConsumptionTextWidget(consumption?.expenses[0].name),
-          _ConsumptionTextWidget(consumption?.expenses[1].name),
+          ...expensesList,
           Gap(10.sp),
           _RowItem(
-            text: 'Consumo total: ',
+            text: 'Consumido: ',
             amount: personalSpent?.total ?? 0,
           ),
           _RowItem(

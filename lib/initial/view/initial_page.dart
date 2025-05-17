@@ -20,7 +20,7 @@ class _InitialPageState extends State<InitialPage> {
   }
 
   Future<void> _initCallback(_) async {
-    await Future.delayed(const Duration(seconds: 2), () {});
+    await Future.delayed(const Duration(seconds: 3), () {});
 
     if (!mounted) return;
 

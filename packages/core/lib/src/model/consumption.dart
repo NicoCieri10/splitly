@@ -11,6 +11,7 @@ class Consumption {
 
   @override
   String toString() {
-    return '$participant: $expenses';
+    final consumedItemNames = expenses.map((e) => e.name).join(', ');
+    return '$participant consumed: $consumedItemNames';
   }
 }

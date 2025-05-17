@@ -24,28 +24,105 @@ class _HomeInitialBodyState extends State<HomeInitialBody> {
   final _consumptions = <Consumption>[];
   final _commentsController = TextEditingController();
 
+  final mockData = PromptData(
+    participants: [
+      const Participant(name: 'Nico'),
+      const Participant(name: 'Nahuel'),
+      const Participant(name: 'Sol'),
+    ],
+    expenses: [
+      const Expense(
+        name: 'Ice cream',
+        amount: 9200,
+        paidBy: Participant(name: 'Sol'),
+      ),
+      const Expense(
+        name: 'Meat',
+        amount: 45600,
+        paidBy: Participant(name: 'Nahuel'),
+      ),
+      const Expense(
+        name: 'Wine',
+        amount: 20067,
+        paidBy: Participant(name: 'Nahuel'),
+      ),
+      const Expense(
+        name: 'Beer',
+        amount: 13770,
+        paidBy: Participant(name: 'Nico'),
+      ),
+    ],
+    consumptions: [
+      const Consumption(
+        expenses: [
+          Expense(
+            name: 'Ice cream',
+            amount: 9200,
+            paidBy: Participant(name: 'Sol'),
+          ),
+          Expense(
+            name: 'Meat',
+            amount: 45600,
+            paidBy: Participant(name: 'Nahuel'),
+          ),
+        ],
+        participant: Participant(name: 'Nahuel'),
+      ),
+      const Consumption(
+        expenses: [
+          Expense(
+            name: 'Ice cream',
+            amount: 9200,
+            paidBy: Participant(name: 'Sol'),
+          ),
+          Expense(
+            name: 'Meat',
+            amount: 45600,
+            paidBy: Participant(name: 'Nahuel'),
+          ),
+          Expense(
+            name: 'Wine',
+            amount: 20067,
+            paidBy: Participant(name: 'Nahuel'),
+          ),
+          Expense(
+            name: 'Beer',
+            amount: 13770,
+            paidBy: Participant(name: 'Nico'),
+          ),
+        ],
+        participant: Participant(name: 'Sol'),
+      ),
+      const Consumption(
+        expenses: [
+          Expense(
+            name: 'Ice cream',
+            amount: 9200,
+            paidBy: Participant(name: 'Sol'),
+          ),
+          Expense(
+            name: 'Meat',
+            amount: 45600,
+            paidBy: Participant(name: 'Nahuel'),
+          ),
+          Expense(
+            name: 'Wine',
+            amount: 20067,
+            paidBy: Participant(name: 'Nahuel'),
+          ),
+          Expense(
+            name: 'Beer',
+            amount: 13770,
+            paidBy: Participant(name: 'Nico'),
+          ),
+        ],
+        participant: Participant(name: 'Nico'),
+      ),
+    ],
+  );
+
   @override
   Widget build(BuildContext context) {
-    // final data = PromptData(
-    //   participants: [
-    //     const Participant(name: 'Nico'),
-    //     const Participant(name: 'Agus'),
-    //     const Participant(name: 'Juli'),
-    //     const Participant(name: 'Nahuel'),
-    //     const Participant(name: 'Sol'),
-    //   ],
-    //   expenses: [
-    //     const Expense(name: 'Ice cream', amount: 9200, paidBy: 'Sol'),
-    //     const Expense(name: 'Meat', amount: 45600, paidBy: 'Nahuel'),
-    //     const Expense(name: 'Wine', amount: 20067, paidBy: 'Nahuel'),
-    //     const Expense(name: 'Beer', amount: 13770, paidBy: 'Nico'),
-    //   ],
-    //   consumptions: [
-    //     "Juli didn't consume wine",
-    //     "Sol didn't consume ice cream",
-    //   ],
-    //   conditions: ["Nico covers Agus's expenses"],
-    // );
     final isValid = _participants.isNotEmpty && _expenses.isNotEmpty;
 
     return Column(
@@ -64,7 +141,8 @@ class _HomeInitialBodyState extends State<HomeInitialBody> {
             onRemoveExpense: _onRemoveExpense,
             onAddConsumption: _onAddConsumption,
             onRemoveConsumption: _onRemoveConsumption,
-            onSendData: isValid ? _onSendData : null,
+            onSendData: _onSendData,
+            // onSendData: isValid ? _onSendData : null,
           ),
         ),
       ],
@@ -73,11 +151,17 @@ class _HomeInitialBodyState extends State<HomeInitialBody> {
 
   void _onSendData() => widget.onSendData(
         PromptData(
-          participants: _participants,
-          expenses: _expenses,
-          consumptions: _consumptions,
+          participants: mockData.participants,
+          expenses: mockData.expenses,
+          consumptions: mockData.consumptions,
           conditions: [],
         ),
+        // PromptData(
+        //   participants: _participants,
+        //   expenses: _expenses,
+        //   consumptions: _consumptions,
+        //   conditions: [],
+        // ),
       );
 
   void _onAddPerson(Participant person) {

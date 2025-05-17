@@ -12,5 +12,5 @@ class Expense {
   final Participant paidBy;
 
   @override
-  String toString() => '$name: $amount-${paidBy.name}';
+  String toString() => '$name: $amount, paid by ${paidBy.name}';
 }

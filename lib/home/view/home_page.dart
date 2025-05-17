@@ -1,6 +1,7 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:splitly/home/bloc/home_bloc.dart';
 import 'package:splitly/home/widget/widget.dart';
 
@@ -27,7 +28,33 @@ class HomeView extends StatelessWidget {
           GenerateResponse(data),
         );
 
-    void onNewRequest() => context.read<HomeBloc>().add(
+    Future<void> onNewRequest() async {
+      final newRequest = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Nueva consulta'),
+          content: const Text('¿Desea realizar una nueva consulta?'),
+          actions: [
+            TextButton(
+              onPressed: context.pop,
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () => context.pop(true),
+              child: const Text('Aceptar'),
+            ),
+          ],
+        ),
+      );
+
+      if (newRequest != true || !context.mounted) return;
+
+      context.read<HomeBloc>().add(
+            const NewRequest(),
+          );
+    }
+
+    void onGetBack() => context.read<HomeBloc>().add(
           const NewRequest(),
         );
 
@@ -35,7 +62,10 @@ class HomeView extends StatelessWidget {
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Splitly'),
+          title: const Text(
+            'Splitly',
+            style: TextStyle(fontWeight: FontWeight.w600),
+          ),
           centerTitle: true,
         ),
         body: BlocConsumer<HomeBloc, HomeState>(
@@ -48,7 +78,12 @@ class HomeView extends StatelessWidget {
                 promptData: state.promptData ?? PromptData.empty(),
                 onNewRequest: onNewRequest,
               ),
-            HomeFailure() => const SizedBox(),
+            HomeFailure() => Center(
+                child: TextButton(
+                  onPressed: onGetBack,
+                  child: const Text('Volver'),
+                ),
+              ),
           },
         ),
       ),
